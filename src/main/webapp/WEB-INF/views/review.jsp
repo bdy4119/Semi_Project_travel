@@ -1,3 +1,4 @@
+<%@page import="mul.cam.a.dto.ReviewDto"%>
 <%@page import="java.util.List"%>
 <%@page import="mul.cam.a.util.Utility"%>
 <%@page import="mul.cam.a.dto.BbsDto"%>
@@ -12,6 +13,7 @@
     <%--BootStrap--%>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    
 
     <style>
         .b-example-divider {
@@ -20,7 +22,30 @@
             border: solid rgba(0, 0, 0, .15);
             border-width: 1px 0;
             box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
+            
         }
+        
+        .travel-photo {
+        	margin: 20px;
+        	width: 270px;
+        	border: solid 5px aqua;
+        }
+        
+        
+        /* 화면 넓어졌을때 */
+        @media (min-width: 1000px) {
+		  table {
+		    width: 1000px;
+		  }
+		  
+		  .order {
+		  	margin-left: 147px;
+		  }
+		  
+		  .class {
+		  	margin-right: 147px;
+		  }
+		}
     </style>
 
 </head>
@@ -48,7 +73,7 @@
                 <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
                     <li><a href="/mypage.do" class="nav-link px-2 link-dark">마이페이지</a></li>
                     <li>
-                        <button type="button" class="btn btn-outline-primary me-2">Login</button>
+						<a class="btn btn-outline-primary me-2" href="/loginpage.do" role="button">Login</a>
                     </li>
                     <li>
                         <button type="button" class="btn btn-primary">Sign-up</button>
@@ -62,116 +87,99 @@
         <div class="b-example-divider"></div>
 
         <%--내용--%>
-        <h1>여행리뷰 내용</h1>
+        <br>
+        
         <%
-		/* String choice = request.getParameter("choice");
-		String search = request.getParameter("search");
-		int pageNumber = Integer.parseInt(request.getParameter("pageNumber"));
-		
-		if(choice == null) {
-			choice = "";
-		}
-		if(search == null) {
-			search = "";
-		} */
-		
-		
-	//	Bbsdao dao = Bbsdao.getInstance();
-		
-	//	List<bbsDTO> list = dao.getBbsList();
-	//	List<bbsDTO> list = dao.getBbsSearchList(choice, search);
-		
-		List<BbsDto> list = (List<BbsDto>)request.getAttribute("bbsList");
+        List<ReviewDto> list = (List<ReviewDto>)request.getAttribute("review");
 		int pageBbs = (Integer)request.getAttribute("pageBbs");
 		int pageNumber = (Integer)request.getAttribute("pageNumber");
 		String choice = (String)request.getAttribute("choice");
 		String search = (String)request.getAttribute("search");
-		%>
-	
+        %>
+        <hr>
+        <h1>여행지 리뷰</h1>
+        <hr>
 		
-		
+		<!-- 사진링크 -->
 		<div align="center">
+			<button type="button" style="font-size:20px;padding-top:1px;padding-bottom:1px;">«</button>
+			<img alt="철원" src="images/cheolwon.jpg" class="travel-photo">
+			<img alt="제주" src="images/jeju.jpg" class="travel-photo">
+			<button type="button" style="font-size:20px;padding-top:1px;padding-bottom:1px;">»</button>
+		</div>
+		
+		
+		<br>
+		<br>
+		<br>
+		<!-- 원하는 순서로 보기 -->
+		<div style="float: left;" class="order">
+			<select id="order">
+				<option value="wdate">최신순</option>
+				<option value="longdate">오래된순</option>
+				<option value="readcount">조회수</option>
+			</select>
+		</div>
+		<!-- 원하는 순서로 보기 -->
+		
 		<!-- 검색 -->
+		<div style="float: right;" class="class">
 			<select id="choice">
 				<option value="">검색</option>
 				<option value="title">제목</option>
 				<option value="content">내용</option>
 				<option value="writer">작성자</option>
 			</select>
-			
-			<input type="text" id="search" value="<%=search %>">
+			<input type="text" id="search" value="">
 			
 			<button type="button" onclick="searchBtn()">검색</button>
+		</div>
 		<!-- 검색 끝 -->
+
 		
 		<br>
+		<div align="center">
 		<br>
 			<table border="1">
 				<col width="70">
-				<col width="600">
-				<col width="100">
+				<col width="450">
+				<col width="120">
+				<col width="200">
 				<col width="150">
 				<thead>
-					<tr>
+					<tr align="center">
 						<th>번호</th>
 						<th>제목</th>
+						<th>ID</th>
+						<th>작성일</th>
 						<th>조회수</th>
-						<th>작성자</th>
 					</tr>
 				</thead>
-				<tbody>
-					<%
-					if(list == null || list.size() == 0) {
-						%>
-						<tr>
-							<td colspan="4">작성된 글이 없습니다.</td>
-						</tr>
-						<%
-					} else {
-						for(int i = 0; i < list.size(); i++) {
-							BbsDto dto = list.get(i);
-						%>
-						<tr>
-							<th><%=i + 1 + (pageNumber * 10) %></th>
-						<%
-						if(dto.getDel() == 0){
-							%>			
-							<td>
-								<%=Utility.arrow(dto.getDepth()) %>
-								<a href="bbsdetail.do?seq=<%=dto.getSeq() %>">
-									<%=dto.getTitle() %>
-								</a>
-							</td>			
-							<%
-						}else if(dto.getDel() == 1){
-							%>
-							<td>
-								<%=Utility.arrow(dto.getDepth()) %>
-								<font color="#ff0000">*** 이 글은 작성자에 의해서 삭제되었습니다 ***</font>	
-							</td>
-							<%
-						}	
-						%>
+					<tbody align="center" class="b-example-divider">
 						
-						<td><%=dto.getReadcount() %></td>
-						<td><%=dto.getId() %></td>
-					</tr>
-							<%
-						}
-					}
-					%>
-				</tbody>
-			</table>
-			<br>
-			<br>
-		</div>
+					</tbody>
+				</table>
+				<br>
+				<br>
+				<div class="container">
+				    <nav aria-label="Page navigation">
+				        <ul class="pagination" id="pagination" style="justify-content:center"></ul>
+				    </nav>
+				</div>
+	 			
+				<button type="button" style="float:right;">글쓰기</button>
+		        <br>
+		        <br>
+		        <br>
+			</div>
         
-        <%--내용--%>
+        <%--내용end--%>
+        
 
     </main>
 
     <%--공백--%>
-    <div class="b-example-divider"></div>
+<!--     <div class="b-example-divider"></div> -->
 
     <%--푸터--%>
     <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">

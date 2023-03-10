@@ -16,10 +16,10 @@ public class ViewController {
         return "localtravel";
     }
 
-    @GetMapping("review.do")
-    public String review() {
-        return "review";
-    }
+//    @GetMapping("review.do")
+//    public String review() {
+//        return "review";
+//    }
 
     @GetMapping("hotel.do")
     public String hotel() {
