@@ -13,7 +13,13 @@ create table member(
 	email varchar(50) unique, -- null은 허용O, 같은값은 허용X
 	auth int -- user인지 client인지 확인
 );
+
+-- 데이터 삽입용
+insert into member
+values('bdy', '1234', '익명', 'bdy@naver.com', null);
 -- -----------------------------------------------
+
+
 
 
 --영권 DB-------------------------------------------------------------------------------------------
