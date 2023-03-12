@@ -50,6 +50,7 @@ VALUES (1, 'hiid', 'hicontents', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, CURRENT_T
 
 
 --다연 DB-------------------------------------------------------------------------------------------
+-- review부분에 들어갈 전체 정보 table
 create table review
 (
     seq        int auto_increment primary key COMMENT '시퀀스 넘버',
@@ -69,6 +70,20 @@ create table review
     updatedate DATETIME NULL COMMENT '수정일자',
     deletedate DATETIME NULL COMMENT '삭제일자'
 );
+
+
+-- 댓글 table
+create table bbscomment(
+	seq decimal(5) not null,
+	id varchar(50),
+	content varchar(1000) not null,
+	wdate timestamp not null
+);
+
+alter table bbscomment
+add foreign key(id) references member(id);
+-- ----------
+
 
 -- 데이터 삽입용
 insert into review
@@ -117,18 +132,7 @@ values ('id', (select ifnull(max(ref, 0) + 1 from bbs b),
                       0,
                       0));
                       
-                      
-  
--- 댓글 table
-create table bbscomment(
-	seq decimal(5) not null,
-	id varchar(50),
-	content varchar(1000) not null,
-	wdate timestamp not null
-);
-
-alter table bbscomment
-add foreign key(id) references member(id);
+                    
 
 
 --다연 DB-------------------------------------------------------------------------------------------
