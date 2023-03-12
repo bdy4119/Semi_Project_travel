@@ -88,7 +88,7 @@ from (select row_number() over(order by ref desc, step asc) as rnum, seq
            , readcount
            , updatedate
            , deletedate
-      from bbs
+      from review
 
       order by ref desc, step asc) a
 where rnum between 21 and 30;
