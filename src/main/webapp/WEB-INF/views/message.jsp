@@ -32,7 +32,7 @@ if(login != null && !login.equals("")){
 		%>
 		<script type="text/javascript">
 		alert("로그인되었습니다");
-		location.href = "bbslist.do";
+		location.href = "main.do";
 		</script>
 		<%
 	}else{

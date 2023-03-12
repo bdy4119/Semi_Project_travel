@@ -36,10 +36,10 @@ public class ViewController {
         return "mypage";
     }
 
-    @GetMapping("loginpage.do")
-    public String loginpage() {
-        return "loginpage";
-    }
+//    @GetMapping("loginpage.do")
+//    public String loginpage() {
+//        return "loginpage";
+//    }
 
 
 }

@@ -22,14 +22,14 @@ public class MemberController {
 	public String login() {
 	//	System.out.println("MemberController login " + new Date());
 		
-		return "board/login";
+		return "login";
 	}
 	
 	@RequestMapping(value = "regi.do", method = RequestMethod.GET)
 	public String regi() {
 	//	System.out.println("MemberController regi " + new Date());
 		
-		return "board/regi";
+		return "regi";
 	}
 	
 	@ResponseBody
@@ -58,7 +58,7 @@ public class MemberController {
 		}
 		model.addAttribute("message", message);
 		
-		return "board/message";
+		return "message";
 	}
 	
 	@RequestMapping(value = "loginAf.do", method = RequestMethod.POST)
@@ -77,7 +77,7 @@ public class MemberController {
 		}
 		model.addAttribute("login", msg);
 		
-		return "board/message";
+		return "message";
 	}
 	
 	@RequestMapping(value = "sessionOut.do", method = RequestMethod.GET)
@@ -85,7 +85,7 @@ public class MemberController {
 		String sessionOut = "logout";
 		
 		model.addAttribute("sessionOut", sessionOut);		
-		return "board/message";
+		return "message";
 	}
 }
 

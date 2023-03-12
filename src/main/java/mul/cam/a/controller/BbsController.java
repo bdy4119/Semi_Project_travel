@@ -103,7 +103,7 @@ public class BbsController {
 		model.addAttribute("bbsupdate", bbsupdate);
 		model.addAttribute("seq", dto.getSeq());
 		
-		return "board/message";
+		return "message";
 	}
 	
 	@GetMapping(value = "answer.do")
@@ -124,7 +124,7 @@ public class BbsController {
 		}
 		model.addAttribute("answer", answer);
 		
-		return "board/message";
+		return "message";
 	}
 	
 	// 댓글
