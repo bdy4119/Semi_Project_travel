@@ -116,6 +116,19 @@ values ('id', (select ifnull(max(ref, 0) + 1 from bbs b),
                       now(),
                       0,
                       0));
+                      
+                      
+  
+-- 댓글 table
+create table bbscomment(
+	seq decimal(5) not null,
+	id varchar(50),
+	content varchar(1000) not null,
+	wdate timestamp not null
+);
+
+alter table bbscomment
+add foreign key(id) references member(id);
 
 
 --다연 DB-------------------------------------------------------------------------------------------
