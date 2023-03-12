@@ -15,4 +15,7 @@ public interface ReviewDao {
 	//페이지
 	int getAllReview(ReviewParam Param);
 	
+	//기존에 저장되어있던 데이터 조회
+	//selectReview
+	
 }

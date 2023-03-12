@@ -1,3 +1,4 @@
+<%@page import="mul.cam.a.dao.ReviewDao"%>
 <%@page import="mul.cam.a.dto.ReviewDto"%>
 <%@page import="java.util.List"%>
 <%@page import="mul.cam.a.util.Utility"%>
@@ -155,23 +156,45 @@
 						<th>조회수</th>
 					</tr>
 				</thead>
-					<tbody align="center" class="b-example-divider">
-						
-					</tbody>
-				</table>
-				<br>
-				<br>
-				<div class="container">
-				    <nav aria-label="Page navigation">
-				        <ul class="pagination" id="pagination" style="justify-content:center"></ul>
-				    </nav>
-				</div>
-	 			
-				<button type="button" style="float:right;">글쓰기</button>
-		        <br>
-		        <br>
-		        <br>
+				<tbody align="center" class="b-example-divider">
+					<%
+						if(list == null || list.size() == 0) {
+							%>
+							<tr>
+								<td colspan="4">작성된 글이 없습니다.</td>
+							</tr>
+							<%
+						} else {
+							for(int i=0; i<list.size(); i++) {
+								ReviewDto dto = list.get(i);
+							%>
+						<tr>
+							<td>1</td>
+							<td><%=dto.getTitle() %></td>
+							<td><%=dto.getId() %></td>
+							<td><%=dto.getWdate() %></td>
+							<td><%=dto.getReadcount() %></td>
+						</tr>
+						<%
+							}
+						}
+						%>
+				</tbody>
+			</table>
+				
+			<br>
+			<br>
+			<div class="container">
+				   <nav aria-label="Page navigation">
+				       <ul class="pagination" id="pagination" style="justify-content:center"></ul>
+				   </nav>
 			</div>
+	 			
+			<button type="button" style="float:right;">글쓰기</button>
+		       <br>
+		       <br>
+		       <br>
+		</div>
         
         <%--내용end--%>
         

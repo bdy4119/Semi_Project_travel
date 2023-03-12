@@ -19,7 +19,7 @@ public class ReviewController {
 	
 	
 	@GetMapping(value="review.do")
-	public String bbslist(ReviewParam param, Model model) {
+	public String review(ReviewParam param, Model model) {
 		
 		// 글의 시작과 끝
 		int pn = param.getPageNumber();  // 0 1 2 3 4
