@@ -85,6 +85,10 @@ create table review
     deletedate DATETIME NULL COMMENT '삭제일자'
 );
 
+alter table review
+add foreign key(id) references member(id);
+
+
 
 -- 댓글 table
 create table reviewcomment(
