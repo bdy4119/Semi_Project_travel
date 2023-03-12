@@ -73,14 +73,14 @@ create table review
 
 
 -- 댓글 table
-create table bbscomment(
+create table reviewcomment(
 	seq decimal(5) not null,
 	id varchar(50),
 	content varchar(1000) not null,
 	wdate timestamp not null
 );
 
-alter table bbscomment
+alter table reviewcomment
 add foreign key(id) references member(id);
 -- ----------
 
