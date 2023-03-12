@@ -32,38 +32,38 @@ create table member
     auth  int
 );
 
-CREATE TABLE cb
+create table cb
 (
-    seq         INT         NOT NULL AUTO_INCREMENT,
-    id          VARCHAR(45) NOT NULL,
-    title       VARCHAR(45) NOT NULL,
-    contents    TEXT        NOT NULL,
-    createdtime TIMESTAMP NULL,
-    readcount   INT NULL,
-    deletetime  TIMESTAMP NULL,
-    updatetime  TIMESTAMP NULL,
+    seq         int         not null AUTO_INCREMENT,
+    id          varchar(45) not null,
+    title       varchar(45) not null,
+    contents    TEXT        not null,
+    createdtime TIMESTAMP null,
+    readcount   int null,
+    deletetime  TIMESTAMP null,
+    updatetime  TIMESTAMP null,
     PRIMARY KEY (seq)
 );
 
 
-CREATE TABLE cbParam
+create table cbParam
 (
-    seq         INT         NOT NULL,
-    id          VARCHAR(45) NOT NULL,
-    contents    VARCHAR(45) NULL,
-    createdtime TIMESTAMP NULL,
-    deletetime  TIMESTAMP NULL,
-    updatetime  TIMESTAMP NULL
+    seq         int         not null,
+    id          varchar(45) not null,
+    contents    varchar(45) null,
+    createdtime TIMESTAMP null,
+    deletetime  TIMESTAMP null,
+    updatetime  TIMESTAMP null
 );
 
 insert into member
 values ('abc', 123, '홍길동', 'abc@naver.com', 3);
 
-INSERT INTO cb
+insert into cb
 VALUES (1, 'helloid', 'hellotitle', 'hellocontents', CURRENT_TIMESTAMP, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
        (2, 'helloid2', 'hellotitle2', 'hellocontents2', CURRENT_TIMESTAMP, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
-INSERT INTO cbparam
+insert into cbparam
 VALUES (1, 'hiid', 'hicontents', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
        (2, 'hiid2', 'hicontents2', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 --영권 DB-------------------------------------------------------------------------------------------
@@ -87,8 +87,8 @@ create table review
     del        decimal(1)    not null COMMENT '수정으로로 삭제할시 0으로 수정',
     readcount  decimal(8)    not null COMMENT '조회수',
 
-    updatedate DATETIME NULL COMMENT '수정일자',
-    deletedate DATETIME NULL COMMENT '삭제일자'
+    updatedate DATETIME null COMMENT '수정일자',
+    deletedate DATETIME null COMMENT '삭제일자'
 );
 
 alter table review
@@ -160,3 +160,63 @@ values ('id', (select ifnull(max(ref, 0) + 1 from bbs b),
 
 
 --다연 DB-------------------------------------------------------------------------------------------
+
+                      
+                      
+--재훈 DB-------------------------------------------------------------------------------------------
+
+--지도 불러올거 생각해서 위도, 경도, 주소 넣어두긴 했는데 카카오지도같은거에서 주소 불러오는 방법이 따로 있는거같아서
+--지금건 임의로만 사용하겠습니다. member랑 연결시킬건 많지 않을 것 같아서 진행하면서 수시로 업데이트 하겠습니다!                      
+
+--추가로 쿼리문 짜둔거 기존거랑 통일시키느라 제거 대문자를 소문자로 다 바꿨는데 검색해서 변경해서 깃허브에 바뀐게 많다고 뜨는데
+--데이터 이름은 바뀐거 없고 into같은거는 확인해서 변경해 두었습니다                       
+
+create table region
+(
+    seq   			int primary key not null,
+    regionname   	varchar(50) not null COMMENT '지역명'
+);
+                      
+create table place
+( 
+    seq   		int             not null, 
+    placename   varchar(20)      not null COMMENT '여행지명', 
+    latitude    double          null, 
+    address     varchar(200)    null, 
+    longitude   double          null 
+);                      
+                      
+create table experience
+( 
+    seq     	int             not null, 
+    exname    	varchar(45)     not null COMMENT '체험명', 
+    latitude   	double          null, 
+    longitude  	double          null, 
+    address    	varchar(200)    null
+);
+
+
+
+create table restaurant
+(
+    seq    	   int             not null, 
+    resname    varchar(45)     not null COMMENT '식당명', 
+    latitude   double          null, 
+    longitude  double          null, 
+    latitude   varchar(200)    null
+);
+
+
+create table spot
+(
+    seq        int             not null, 
+    spotname   varchar(45)     not null COMMENT '관광명소명', 
+    latitude   double          null, 
+    longitude  double          null, 
+    address    varchar(200)    null
+);                      
+                      
+insert into region (seq, regionname)
+values (1, '서울')
+ 
+--재훈 DB-------------------------------------------------------------------------------------------
