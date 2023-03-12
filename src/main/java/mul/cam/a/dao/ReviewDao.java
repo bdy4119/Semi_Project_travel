@@ -2,8 +2,7 @@ package mul.cam.a.dao;
 
 import java.util.List;
 
-import mul.cam.a.dto.BbsDto;
-import mul.cam.a.dto.BbsParam;
+import mul.cam.a.dto.ReviewComment;
 import mul.cam.a.dto.ReviewDto;
 import mul.cam.a.dto.ReviewParam;
 
@@ -15,7 +14,21 @@ public interface ReviewDao {
 	//페이지
 	int getAllReview(ReviewParam Param);
 	
-	//기존에 저장되어있던 데이터 조회
-	//selectReview
+	//detail
+	ReviewDto getReview(int seq);
+	
+	
+	//글추가
+	int writeReview(ReviewDto dto);
+	
+	
+	//답글
+	int answerReviewUpdate(ReviewDto dto);
+	int answerReviewInsert(ReviewDto dto);
+	
+	
+	//댓글
+	int commentWrite(ReviewComment comment);
+	List<ReviewComment> commentList(int seq);
 	
 }

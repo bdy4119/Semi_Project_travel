@@ -14,6 +14,8 @@
     <%--BootStrap--%>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    <script type="text/javascript" src="./jquery/jquery.twbsPagination.min.js"></script>
     
 
     <style>
@@ -85,7 +87,7 @@
         <%--헤더--%>
 
         <%--공백--%>
-        <div class="b-example-divider"></div>
+<!--         <div class="b-example-divider"></div> -->
 
         <%--내용--%>
         <br>
@@ -104,8 +106,12 @@
 		<!-- 사진링크 -->
 		<div align="center">
 			<button type="button" style="font-size:20px;padding-top:1px;padding-bottom:1px;">«</button>
-			<img alt="철원" src="images/cheolwon.jpg" class="travel-photo">
-			<img alt="제주" src="images/jeju.jpg" class="travel-photo">
+			<a href="">
+				<img alt="철원" src="images/cheolwon.jpg" class="travel-photo">
+			</a>
+			<a href="">
+				<img alt="제주" src="images/jeju.jpg" class="travel-photo">
+			</a>
 			<button type="button" style="font-size:20px;padding-top:1px;padding-bottom:1px;">»</button>
 		</div>
 		
@@ -168,14 +174,35 @@
 							for(int i=0; i<list.size(); i++) {
 								ReviewDto dto = list.get(i);
 							%>
-						<tr>
-							<td>1</td>
-							<td><%=dto.getTitle() %></td>
-							<td><%=dto.getId() %></td>
-							<td><%=dto.getWdate() %></td>
-							<td><%=dto.getReadcount() %></td>
-						</tr>
-						<%
+							<tr>
+								<th><%=i+1+(pageNumber*10) %></th>
+								<%
+								if(dto.getDel() == 0) {
+								%>
+								<td>
+									<%=Utility.arrow(dto.getDepth()) %>
+									<a href="reviewdetail.do?seq=<%=dto.getSeq() %>">
+										<%=dto.getTitle() %>	
+									</a>
+								</td>
+								<%
+								} else if(dto.getDel() == 1) {
+									%>
+									<td>
+										<%=Utility.arrow(dto.getDepth()) %>
+										<font color="#ff0000">
+											*** 이 글은 작성자에 의해 삭제된 게시글입니다 ***
+										</font>
+									</td>
+									<%
+								}	
+								%>
+						
+								<td><%=dto.getId() %></td>
+								<td><%=dto.getWdate() %></td>
+								<td><%=dto.getReadcount() %></td>
+							</tr>
+							<%
 							}
 						}
 						%>
@@ -185,21 +212,70 @@
 			<br>
 			<br>
 			<div class="container">
-				   <nav aria-label="Page navigation">
-				       <ul class="pagination" id="pagination" style="justify-content:center"></ul>
-				   </nav>
+				<nav aria-label="Page navigation">
+					<ul class="pagination" id="pagination" style="justify-content:center"></ul>
+				</nav>
 			</div>
+	 		<a href="reviewwrite.do">
+				<button type="button" style="float:right;">글쓰기</button>
+	 		</a>
 	 			
-			<button type="button" style="float:right;">글쓰기</button>
-		       <br>
-		       <br>
-		       <br>
+		    <br>
+		    <br>
+		    <br>
 		</div>
+		
+    </main>
+	<script type="text/javascript">
+	
+		let search = "<%=search %>";
+		console.log("search= " + search);
+		if(search !="") {
+			let obj = document.getElementById("choice");
+			obj.value = "<%=choice %>";
+			obj.setAttribute("selected", "selected");
+		}
+		
+		
+		function searchBtn() {
+			let choice = document.getElementById('choice').value;
+			let search = document.getElementById('search').value;
+				
+			/* if(choice == ""){
+				alert("카테고리를 선택해 주십시오");
+				return;
+			} 
+			if(search.trim() == ""){
+				alert("검색어를 선택해 주십시오");
+				return;
+			} */
+				
+			location.href = "review.do?choice=" + choice + "&search=" + search;
+		}
+			
+			
+		//페이지 부트스트랩
+		$('#pagination').twbsPagination({
+			startPage: <%=pageNumber+1 %>, 
+			totalPages: <%=pageBbs %>,
+			visiblePages: 10,
+			first:'<span srid-hidden="true">«</span>',
+			prev:"이전",
+			next:"다음",
+			last:'<span srid-hidden="true">»</span>',
+			initiateStartPageClick:false,   // onPageClick 자동실행되지 않도록
+			onPageClick: function (event, page) {
+			    // alert(page);
+			    let choice = document.getElementById('choice').value;
+				let search = document.getElementById('search').value;
+			    location.href = "review.do?choice=" + choice + "&search=" + search + "&pageNumber=" + (page-1);
+			}
+		});
+		</script>
         
         <%--내용end--%>
         
 
-    </main>
 
     <%--공백--%>
 <!--     <div class="b-example-divider"></div> -->

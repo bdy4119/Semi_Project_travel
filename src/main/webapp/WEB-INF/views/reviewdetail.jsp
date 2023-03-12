@@ -1,3 +1,5 @@
+<%@page import="mul.cam.a.dto.ReviewDto"%>
+<%@page import="java.util.List"%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!doctype html>
 <html lang="en">
@@ -9,6 +11,7 @@
     <%--BootStrap--%>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
 
     <style>
         .b-example-divider {
@@ -18,6 +21,17 @@
             border-width: 1px 0;
             box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
         }
+        
+        th{
+			background-color: #007bff;
+			color: white;
+		}
+		
+		pre{
+			white-space: pre-wrap;
+			word-break: break-all;
+			overflow: auto;
+		}
         
         /*  .main-crop {
 		    position: relative;
@@ -37,6 +51,12 @@
 </head>
 
 <body>
+<%
+	ReviewDto dto = (ReviewDto)request.getAttribute("dto");
+%>
+
+
+
 <%--container--%>
 <div class="container">
     <main>
@@ -69,7 +89,7 @@
         <%--헤더--%>
 
         <%--공백--%>
-        <div class="b-example-divider"></div>
+        <!-- <div class="b-example-divider"></div> -->
 
         <%--내용--%>
 <!-- 작성자 제목 작성일 조회수 정보 내용
@@ -94,40 +114,34 @@
 			<form>
 				<table class="table table-striped">
 				<colgroup>
-					<col width="150px"/>
+					<col width="170px"/>
 					<col width="500px"/>
 				</colgroup>
 					<tr>
 						<th>작성자</th>
-						<td>
-						</td>
+						<td><%=dto.getId() %></td>
 					</tr>
 					<tr>
 						<th>제목</th>
-						<td>
-						</td>
+						<td><%=dto.getTitle() %></td>
 					</tr>
 					<tr>
 						<th>작성일</th>
-						<td>
-						</td>
+						<td><%=dto.getWdate() %></td>
 					</tr>
 					<tr>
 						<th>조회수</th>
-						<td>
-						</td>
+						<td><%=dto.getReadcount() %></td>
 					</tr>
 					<tr>
-						<th colspan="2" style="size:22px;font-weight:bold;">제목</th>
-					</tr>
-					<tr>
+						<th>내용</th>
 						<td colspan="2" style="background-color:white;">
-							<pre style="font-size: 20px;font-family:고딕, arial;background-color:white">내용</pre>
+							<pre style="font-size: 20px;font-family:고딕, arial;background-color:white"><%=dto.getContent() %></pre>
 						</td>
 					</tr>
 					<tr>
 						<td colspan="2">
-							<button type="button" class="btn btn-primary" onclick="answerBbs()">답글</button>
+							<!-- <button type="button" class="btn btn-primary" onclick="answerBbs()">답글</button> -->
 							<button type="button" class="btn btn-primary" onclick="location.href='review.do'">글목록</button>
 							
 							<!-- 수정, 삭제는 로그인한 본인한테만 보이게 하기 -->
@@ -141,10 +155,10 @@
 		</div>
 		
 		<script type="text/javascript">
-			function answerBbs(seq) {
+			/* function answerBbs(seq) {
 				//seq를 넘겨주고 있으므로 seq값 가지고 넘어가기
 				location.href = "answer.do?seq=" + seq;
-			}
+			} */
 			
 			function updateBbs(seq) {
 				location.href = "bbsupdate.do?seq=" + seq;
@@ -164,23 +178,22 @@
 		<br>
 		<!-- 댓글 -->
 		<div id="app" class="container">
-			<form action="commentWriteAf.do" method="post">
-			<input type="hidden" name="seq" value="">
-			<input type="hidden" name="id" value="">
+			<form action="" method="post">
+			<input type="hidden" name="seq" value="<%=dto.getSeq() %>">
+			<input type="hidden" name="id" value="<%=dto.getId() %>">
 			
 				<table>
 				<col width="1500px">
 				<col width="150px">
 					<tr>
 						<td>comment</td>
-						<td style="padding-left:30px">올리기</td>
 					</tr>
 					<tr>
 						<td>
 							<textarea rows="3" class="form-control" name="content"></textarea>
 						</td>
 						<td style="padding-left:30px">
-							<button type="submit" class="btn btn-primary btn-block p-4">완료</button>
+							<button type="button" onclick="reviewCommentWrite()" class="btn btn-primary btn-block p-4">등록</button>
 						</td>
 					</tr>
 				</table>
@@ -196,6 +209,45 @@
 				</tbody>
 			</table>
 		</div>
+		
+		<script type="text/javascript">
+			function reviewCommentWrite(seq) {
+				location.href = "reviewCommentWrite.do&seq=" + seq;
+			}
+			
+			$(document).ready(function(){
+				
+				$.ajax({
+					url:"./reviewCommentList.do", //react에서는 경로표시 해줘야함
+					type:"get",
+					data:{"seq":<%=dto.getSeq() %>},
+					success:function(list) {
+					//	alert('success')
+					//	alert(JSON.stringify(list));
+						
+						
+						$("#tbody").html(""); //한번 비워줘야 새로고침해도 더 추가되지않음
+						
+						//밑에서 올려주기
+						//each문 == for문	  (인덱스 번호대로 오브젝트 하나씩 꺼내옴)
+						$.each(list, function(index, item){
+							let str = "<tr class='table-info'>"
+									+ 	"<td> 작성자 : " + item.id + "</td>"
+									+ 	"<td> 작성일 : " + item.wdate + "</td>"
+									+ "</tr>"
+									+ "<tr>"
+									+	"<td colspan='2'>" + item.content + "</td>"
+									+ "</tr>"
+							$("#tbody").append(str);
+						});
+					},
+					error:function() {
+						alert('error');
+					}
+				});
+				
+			});
+		</script>
 
     </main>
 

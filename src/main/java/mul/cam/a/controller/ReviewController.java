@@ -6,7 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import mul.cam.a.dto.ReviewComment;
 import mul.cam.a.dto.ReviewDto;
 import mul.cam.a.dto.ReviewParam;
 import mul.cam.a.service.ReviewService;
@@ -43,6 +46,7 @@ public class ReviewController {
 			param.setSearch("");
 		}
 		
+		//					review라는 이름으로 list를 뷰에서 사용해라
 		model.addAttribute("review", list);	// 게시판 리스트
 		model.addAttribute("pageBbs", pageBbs);	// 총 페이지수
 		model.addAttribute("pageNumber", param.getPageNumber()); // 현재 페이지
@@ -51,13 +55,87 @@ public class ReviewController {
 		
 		return "review";
 	}
-	
-	
-	
+
 	
 	//reviewdetail
 	@GetMapping("reviewdetail.do")
-    public String reviewdetail() {
+    public String reviewdetail(Model model, int seq) {
+		ReviewDto dto =service.getReview(seq);
+		model.addAttribute("dto", dto);
+		
         return "reviewdetail";
     }
+	
+	
+	
+	//reviewwrite
+	@GetMapping("reviewwrite.do")
+	public String reviewwrite() {
+		return "reviewwrite";
+	}
+	
+	
+	//reviewwriteAf
+	//로그인 되고 난 다음에는 post로 바꾸기
+	@GetMapping(value="reviewwriteAf.do")
+	public String writeReview(Model model, ReviewDto dto) {
+		boolean isS = service.writeReview(null);
+		String reviewwrite = "REVIEW_ADD_OK";
+		if(isS == false) {
+			reviewwrite = "REVIEW_ADD_NO";
+		}
+		model.addAttribute("reviewwrite", reviewwrite);
+		return "redirect:/review.do";
+	}
+	
+	
+	
+	
+	//답글(사용할지 말지 고민중)
+	@PostMapping(value = "answer.do")
+	public String answer(Model model, int seq, ReviewDto dto) {
+		dto.setSeq(seq);
+		
+		boolean isS = service.answerReview(dto);
+		String answer = "REVIEW_ANSWER_OK";
+		if(isS == false) {
+			answer = "REVIEW_ANSWER_NO";
+		}
+		model.addAttribute("answer", answer);
+		
+		return "reviewdetail";
+		
+	}
+	
+	
+	
+	//댓글추가
+	//손보기,,,,
+	@PostMapping(value = "reviewCommentWrite.do")
+	public String commentWrite(ReviewComment comment) {
+		boolean isS = service.commentWrite(comment);
+		if(isS) {
+			System.out.println("댓글 작성 성공");
+		} else {
+			System.out.println("댓글 작성 실패");
+		}
+		
+		return "redirect:/reviewdetail.do?seq=" + comment.getSeq();
+	}
+	
+	
+	
+	//댓글 뿌리기
+	@ResponseBody	//ajax사용함
+	@GetMapping(value="reviewCommentList.do")
+	public List<ReviewComment> commentList(int seq) {
+		List<ReviewComment> list = service.commentList(seq);
+		return list;
+	}
+	
+	
+	
+	
+	
+	
 }

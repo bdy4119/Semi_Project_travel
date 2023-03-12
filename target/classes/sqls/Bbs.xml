@@ -52,6 +52,7 @@
 			#{title}, #{content}, now(), 0, 0)	
 </insert>
 
+<!-- bbsdetail -->
 <select id="getBbs" parameterType="Integer" resultType="mul.cam.a.dto.BbsDto">
 	select seq, id, ref, step, depth, title, content, wdate, del, readcount
 	from bbs
