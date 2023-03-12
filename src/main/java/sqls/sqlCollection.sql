@@ -3,6 +3,15 @@
 --쿼리문 작성 해주시고 수정 사항 생기면 업데이트 부탁드립니다
 
 --영권 DB-------------------------------------------------------------------------------------------
+create table member
+(
+    id    varchar(50) primary key,
+    pwd   varchar(50) not null,
+    name  varchar(50) not null,
+    email varchar(50) unique,
+    auth  int
+);
+
 CREATE TABLE cb
 (
     seq         INT         NOT NULL AUTO_INCREMENT,
@@ -27,13 +36,16 @@ CREATE TABLE cbParam
     updatetime  TIMESTAMP NULL
 );
 
+insert into member
+values ('abc', 123, '홍길동', 'abc@naver.com', 3);
+
 INSERT INTO cb
-VALUES (1, 'helloid', 'hellotitle', 'hellocontents', 0, 0, 0, 0),
-       (2, 'helloid2', 'hellotitle2', 'hellocontents2', 0, 0, 0, 0),;
+VALUES (1, 'helloid', 'hellotitle', 'hellocontents', CURRENT_TIMESTAMP, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+       (2, 'helloid2', 'hellotitle2', 'hellocontents2', CURRENT_TIMESTAMP, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
 INSERT INTO cbparam
-VALUES (1, 'hiid', 'hicontents', 0, 0, 0),
-       (2, 'hiid2', 'hicontents2', 0, 0, 0);
+VALUES (1, 'hiid', 'hicontents', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+       (2, 'hiid2', 'hicontents2', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 --영권 DB-------------------------------------------------------------------------------------------
 
 
