@@ -220,3 +220,45 @@ insert into region (seq, regionname)
 values (1, '서울')
  
 --재훈 DB-------------------------------------------------------------------------------------------
+
+--하나 DB-------------------------------------------------------------------------------------------
+
+create table hotels
+(
+    seq        int auto_increment primary key,
+    hotel_name varchar(50)   not null,
+    read_count decimal(8)    not null default 0,
+    thumbnail  varchar(1000) not null,
+    created_at timestamp     not null default now(),
+    updated_at timestamp
+);
+
+INSERT INTO hotels (read_count, hotel_name, thumbnail)
+VALUES (10, 'hotelA', 'https://example.com/hotelA.jpg');
+
+INSERT INTO hotels (read_count, hotel_name, thumbnail)
+VALUES (10, 'hotelB', 'https://example.com/hotelB.jpg');
+
+
+
+SELECT *
+FROM hotel_comments;
+
+create table hotel_comments
+(
+    id         varchar(50),
+    seq        int auto_increment primary key,
+    hotelseq   int,
+    content    varchar(1000) not null,
+    created_at timestamp     not null default now(),
+    updated_at timestamp,
+    foreign key (hotelseq) references hotels (seq)
+);
+
+INSERT INTO hotel_comments (hotelseq, content)
+VALUES (1, '호텔A 첫 후기');
+
+INSERT INTO hotel_comments (hotelseq, content)
+VALUES (2, '호텔B 첫 후기');
+
+--하나 DB-------------------------------------------------------------------------------------------
