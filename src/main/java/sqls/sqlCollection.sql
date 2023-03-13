@@ -2,26 +2,6 @@
 
 --쿼리문 작성 해주시고 수정 사항 생기면 업데이트 부탁드립니다
 
-
--- member table
--- alter table하는데 member필요해서 일단 임의로 생성해보려고 하는데 혹시 몰라서 올립니닷,,
--- 동민님이 작성하시면서 추가되는 거 있으면 요거 지우고 동민님껄로 다시 생성할게요:)
-create table member(
-	id varchar(50) primary key, -- 중복방지/ null과 같은값 허용X
-	pwd varchar(50) not null,
-	name varchar(50) not null,
-	email varchar(50) unique, -- null은 허용O, 같은값은 허용X
-	auth int -- user인지 client인지 확인
-);
-
--- 데이터 삽입용
-insert into member
-values('bdy', '1234', '익명', 'bdy@naver.com', null);
--- -----------------------------------------------
-
-
-
-
 --영권 DB-------------------------------------------------------------------------------------------
 create table member
 (
@@ -32,7 +12,7 @@ create table member
     auth  int
 );
 
-create table cb
+create table community
 (
     seq         int         not null AUTO_INCREMENT,
     id          varchar(45) not null,
@@ -46,7 +26,7 @@ create table cb
 );
 
 
-create table cbParam
+create table communitycomment
 (
     seq         int         not null,
     id          varchar(45) not null,
