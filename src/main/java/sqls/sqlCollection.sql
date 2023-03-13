@@ -39,11 +39,11 @@ create table communitycomment
 insert into member
 values ('abc', 123, '홍길동', 'abc@naver.com', 3);
 
-insert into cb
+insert into community
 VALUES (1, 'helloid', 'hellotitle', 'hellocontents', CURRENT_TIMESTAMP, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
        (2, 'helloid2', 'hellotitle2', 'hellocontents2', CURRENT_TIMESTAMP, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
-insert into cbparam
+insert into communitycomment
 VALUES (1, 'hiid', 'hicontents', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
        (2, 'hiid2', 'hicontents2', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 --영권 DB-------------------------------------------------------------------------------------------
